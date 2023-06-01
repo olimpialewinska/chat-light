@@ -8,7 +8,7 @@ function createWindow() {
     height: 600,
     title: "ChatLight",
     frame: false,
-    alwaysOnTop: true,
+    // alwaysOnTop: true,
     webPreferences: {
       preload: __dirname + "/preload.js",
       nodeIntegration: false,
@@ -52,4 +52,16 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+ipcMain.on("close-window", () => {
+  mainWindow.close();
+});
+
+ipcMain.on("minimize-window", () => {
+  mainWindow.minimize();
+});
+
+ipcMain.on("maximize-window", () => {
+  mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
 });
