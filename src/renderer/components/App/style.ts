@@ -10,7 +10,7 @@ export const StyledApp = styled.div`
 
 export const StyledHeader = styled.div`
   -webkit-app-region: drag;
-  background-color: #fff;
+  background-color: rgb(54, 54, 54);
   height: 32px;
   padding: 0 10px;
   display: flex;
@@ -49,7 +49,6 @@ export const SettingsIcon = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: invert(1);
   opacity: 0.6;
   background-size: cover;
   background-position: center;
