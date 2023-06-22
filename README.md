@@ -1,6 +1,4 @@
-<p align="center">
-<img width="640" alt="Zrzut ekranu 2023-06-1 o 20 20 58" src="https://github.com/olimpialewinska/chat-light/assets/100933608/5a7e33d0-4d16-4773-baa8-c7038f6c577b">
-<p>
+
 
 
 # ChatLight - GPT-Powered Chat Desktop Application
