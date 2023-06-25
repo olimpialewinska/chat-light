@@ -8,6 +8,8 @@ export const StyledApp = styled.div`
   box-sizing: border-box;
   background-color: rgb(64, 64, 64);
   transition: background-color 0.2s ease-in-out;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 `;
 
 export const StyledHeader = styled.div`

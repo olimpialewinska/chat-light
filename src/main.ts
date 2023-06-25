@@ -55,7 +55,9 @@ function toggleWindow() {
   }
 }
 
-app.on("ready", createWindow);
+app.on("ready", () => {
+  createWindow();
+});
 
 app.on("will-quit", () => {
   globalShortcut.unregisterAll();
@@ -124,10 +126,9 @@ ipcMain.on("fullscreen-window", () => {
 });
 
 ipcMain.on("save-theme", (event, theme: string) => {
-  store.set("userData", { theme: theme });
+  store.set("userData.theme", theme);
 });
 
 ipcMain.on("save-autostart", (event, autostart: boolean) => {
-  store.set("userData", { autostart: autostart });
-  console.log(autostart, store.get("userData.autostart"));
+  store.set("userData.autostart", autostart);
 });

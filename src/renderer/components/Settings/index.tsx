@@ -1,5 +1,5 @@
 import { store } from "@/renderer/stores";
-import { Container, Row, Switch } from "./style";
+import { Container, Label, Row, Switch, Wrapper } from "./style";
 
 import React, { useLayoutEffect, useState } from "react";
 
@@ -32,14 +32,16 @@ export function Settings() {
     <Container
       style={{ color: store.appSettings.currentappSettings["text-color"] }}
     >
-      <Row>
-        <p>turn on dark mode</p>
-        <Switch isOn={isOn} onClick={handleClick} />
-      </Row>
-      <Row>
-        <p>Autostart</p>
-        <Switch isOn={isOnAutostart} onClick={handleClickAutostart} />
-      </Row>
+      <Wrapper>
+        <Row>
+          <Label>Dark Mode</Label>
+          <Switch isOn={isOn} onClick={handleClick} />
+        </Row>
+        <Row>
+          <Label>Autostart</Label>
+          <Switch isOn={isOnAutostart} onClick={handleClickAutostart} />
+        </Row>
+      </Wrapper>
     </Container>
   );
 }

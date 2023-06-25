@@ -30,7 +30,6 @@ export const App = observer(() => {
     });
     window.electron.ipcRenderer.on("set-autostart", (event, b) => {
       store.appSettings.setAutostart(b);
-      console.log(b);
     });
 
     window.electron.ipcRenderer.send("get-theme");
