@@ -26,21 +26,27 @@ export const App = observer(() => {
 
   React.useEffect(() => {
     window.electron.ipcRenderer.on("set-theme", (event, theme) => {
-      store.themeStore.setTheme(theme);
+      store.appSettings.setTheme(theme);
+    });
+    window.electron.ipcRenderer.on("set-autostart", (event, b) => {
+      store.appSettings.setAutostart(b);
+      console.log(b);
     });
 
     window.electron.ipcRenderer.send("get-theme");
+    window.electron.ipcRenderer.send("get-autostart");
   }, []);
 
   return (
     <StyledApp
       style={{
-        backgroundColor: store.themeStore.currentThemeStore["background-color"],
+        backgroundColor:
+          store.appSettings.currentappSettings["background-color"],
       }}
     >
       <StyledHeader
         style={{
-          backgroundColor: store.themeStore.currentThemeStore["nav-bg"],
+          backgroundColor: store.appSettings.currentappSettings["nav-bg"],
         }}
       >
         <WindowControls>
@@ -78,7 +84,7 @@ export const App = observer(() => {
           style={{
             backgroundImage: `url(${SETTINGS_ICON})`,
             filter: `invert(${
-              store.themeStore.currentThemeStore.theme === "light" ? 1 : 0
+              store.appSettings.currentappSettings.theme === "light" ? 1 : 0
             })`,
           }}
           onClick={handleClick}

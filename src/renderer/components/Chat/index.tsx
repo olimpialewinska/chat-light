@@ -16,7 +16,7 @@ export const Chat = observer(() => {
   return (
     <Container
       style={{
-        color: store.themeStore.currentThemeStore["text-color"],
+        color: store.appSettings.currentappSettings["text-color"],
       }}
     >
       <ChatContainer></ChatContainer>
@@ -24,26 +24,26 @@ export const Chat = observer(() => {
       <ChatInput
         style={{
           backgroundColor:
-            store.themeStore.currentThemeStore["input-container-bg"],
+            store.appSettings.currentappSettings["input-container-bg"],
         }}
       >
         <Attachment
           style={{
             backgroundImage: `url(${ATTACHMENT_ICON})`,
             filter: `invert(${
-              store.themeStore.currentThemeStore.theme === "light" ? 0 : 1
+              store.appSettings.currentappSettings.theme === "light" ? 0 : 1
             })`,
           }}
         />
         <MessageContainer
           style={{
-            backgroundColor: store.themeStore.currentThemeStore["input-bg"],
+            backgroundColor: store.appSettings.currentappSettings["input-bg"],
           }}
         >
           <MessageInput
             placeholder="Type a message"
             style={{
-              color: store.themeStore.currentThemeStore["text-color"],
+              color: store.appSettings.currentappSettings["text-color"],
             }}
           />
         </MessageContainer>
@@ -51,7 +51,7 @@ export const Chat = observer(() => {
           style={{
             backgroundImage: `url(${SEND_ICON})`,
             filter: `invert(${
-              store.themeStore.currentThemeStore.theme === "light" ? 0 : 1
+              store.appSettings.currentappSettings.theme === "light" ? 0 : 1
             })`,
           }}
         />

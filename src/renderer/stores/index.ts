@@ -1,10 +1,10 @@
 import { configure } from "mobx";
-import { ThemeStore } from "./themeStore";
+import { AppSettings } from "./appSettings";
 
 configure({ enforceActions: "never" });
 
 export class Store {
-  public themeStore = new ThemeStore();
+  public appSettings = new AppSettings();
 
   constructor() {}
 }

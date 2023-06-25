@@ -7,8 +7,14 @@ import {
   webContents,
 } from "electron";
 import { store } from "./store";
+import path from "path";
 
 let mainWindow: BrowserWindow;
+const appFolder = path.dirname(process.execPath);
+const updateExe = path.resolve(appFolder, "..", "Update.exe");
+const exeName = path.basename(process.execPath);
+
+let autostart: boolean = store.get("userData.autostart");
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -61,6 +67,17 @@ app.on("window-all-closed", () => {
   }
 });
 
+app.setLoginItemSettings({
+  openAtLogin: autostart,
+  path: updateExe,
+  args: [
+    "--processStart",
+    `"${exeName}"`,
+    "--process-start-args",
+    '"--hidden"',
+  ],
+});
+
 ipcMain.on("close-window", () => {
   mainWindow.close();
 });
@@ -84,6 +101,16 @@ ipcMain.on("get-theme", () => {
   mainWindow.webContents.send("set-theme", theme);
 });
 
+ipcMain.on("get-autostart", () => {
+  let autostart = store.get("userData.autostart");
+  if (autostart === undefined) {
+    store.set("userData.autostart", true);
+    autostart = true;
+  }
+
+  mainWindow.webContents.send("set-autostart", autostart);
+});
+
 ipcMain.on("minimize-window", () => {
   mainWindow.minimize();
 });
@@ -98,4 +125,9 @@ ipcMain.on("fullscreen-window", () => {
 
 ipcMain.on("save-theme", (event, theme: string) => {
   store.set("userData", { theme: theme });
+});
+
+ipcMain.on("save-autostart", (event, autostart: boolean) => {
+  store.set("userData", { autostart: autostart });
+  console.log(autostart, store.get("userData.autostart"));
 });

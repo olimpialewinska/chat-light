@@ -3,6 +3,7 @@ import Store, { Schema } from "electron-store";
 interface UserData {
   userData: {
     theme: string;
+    autostart: boolean;
   };
 }
 
@@ -14,6 +15,10 @@ const schema: Schema<UserData> = {
         type: "string",
         default: "light",
         enum: ["light", "dark"],
+      },
+      autostart: {
+        type: "boolean",
+        default: true,
       },
     },
   },
