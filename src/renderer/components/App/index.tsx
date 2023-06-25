@@ -10,8 +10,10 @@ import {
 import { SETTINGS_ICON } from "@/renderer/constants/icons";
 import { Chat } from "../Chat";
 import { Settings } from "../Settings";
+import { store } from "@/renderer/stores";
+import { observer } from "mobx-react-lite";
 
-export function App() {
+export const App = observer(() => {
   const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
 
   const handleClick = React.useCallback(() => {
@@ -22,9 +24,25 @@ export function App() {
     window.electron.ipcRenderer.send(action);
   }, []);
 
+  React.useEffect(() => {
+    window.electron.ipcRenderer.on("set-theme", (event, theme) => {
+      store.themeStore.setTheme(theme);
+    });
+
+    window.electron.ipcRenderer.send("get-theme");
+  }, []);
+
   return (
-    <StyledApp>
-      <StyledHeader>
+    <StyledApp
+      style={{
+        backgroundColor: store.themeStore.currentThemeStore["background-color"],
+      }}
+    >
+      <StyledHeader
+        style={{
+          backgroundColor: store.themeStore.currentThemeStore["nav-bg"],
+        }}
+      >
         <WindowControls>
           <WindowControlButton
             onClick={() => {
@@ -45,8 +63,10 @@ export function App() {
             title="Minimize"
           />
           <WindowControlButton
-            onClick={() => {
-              handleControlButtonClicked("maximize-window");
+            onClick={(e: React.MouseEvent) => {
+              handleControlButtonClicked(
+                e.altKey ? "maximize-window" : "fullscreen-window"
+              );
             }}
             style={{
               backgroundColor: "#27C93F",
@@ -57,6 +77,9 @@ export function App() {
         <SettingsIcon
           style={{
             backgroundImage: `url(${SETTINGS_ICON})`,
+            filter: `invert(${
+              store.themeStore.currentThemeStore.theme === "light" ? 1 : 0
+            })`,
           }}
           onClick={handleClick}
         />
@@ -64,4 +87,4 @@ export function App() {
       <StyledBody>{isSettingsOpen ? <Settings /> : <Chat />}</StyledBody>
     </StyledApp>
   );
-}
+});

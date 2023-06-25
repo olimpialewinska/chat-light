@@ -6,6 +6,8 @@ export const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  background-color: rgb(64, 64, 64);
+  transition: background-color 0.2s ease-in-out;
 `;
 
 export const StyledHeader = styled.div`
@@ -17,6 +19,7 @@ export const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease-in-out;
 `;
 
 export const WindowControls = styled.div`
@@ -24,6 +27,7 @@ export const WindowControls = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.1));
 `;
 
 export const WindowControlButton = styled.div`

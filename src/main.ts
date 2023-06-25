@@ -1,4 +1,12 @@
-import { app, BrowserWindow, globalShortcut, ipcMain } from "electron";
+import {
+  app,
+  BrowserWindow,
+  globalShortcut,
+  ipcMain,
+  nativeTheme,
+  webContents,
+} from "electron";
+import { store } from "./store";
 
 let mainWindow: BrowserWindow;
 
@@ -8,7 +16,6 @@ function createWindow() {
     height: 600,
     title: "ChatLight",
     frame: false,
-    // alwaysOnTop: true,
     webPreferences: {
       preload: __dirname + "/preload.js",
       nodeIntegration: false,
@@ -58,10 +65,37 @@ ipcMain.on("close-window", () => {
   mainWindow.close();
 });
 
+ipcMain.on("get-theme", () => {
+  let theme = store.get("userData.theme");
+  if (!theme) {
+    ipcMain.handle("dark-mode:toggle", () => {
+      if (nativeTheme.shouldUseDarkColors) {
+        nativeTheme.themeSource = "light";
+      } else {
+        nativeTheme.themeSource = "dark";
+      }
+      return nativeTheme.shouldUseDarkColors;
+    });
+
+    theme = nativeTheme.shouldUseDarkColors ? "dark" : "light";
+    store.set("userData.theme", theme);
+  }
+
+  mainWindow.webContents.send("set-theme", theme);
+});
+
 ipcMain.on("minimize-window", () => {
   mainWindow.minimize();
 });
 
 ipcMain.on("maximize-window", () => {
   mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
+});
+
+ipcMain.on("fullscreen-window", () => {
+  mainWindow.setFullScreen(!mainWindow.isFullScreen());
+});
+
+ipcMain.on("save-theme", (event, theme: string) => {
+  store.set("userData", { theme: theme });
 });

@@ -11,7 +11,6 @@ export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: rgb(64, 64, 64);
   align-items: center;
 `;
 
@@ -22,6 +21,7 @@ export const ChatInput = styled.div`
   flex-direction: row;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 0 10px;
+  transition: background-color 0.2s ease-in-out;
 `;
 
 export const Attachment = styled.div`
@@ -48,7 +48,7 @@ export const MessageContainer = styled.div`
   margin: 10px;
   color: rgb(255, 255, 255);
   padding: 16px;
-  padding-right: 16p;
+  padding-right: 16px;
   border-radius: 24px;
   font-size: 14px;
   display: flex;
