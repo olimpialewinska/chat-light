@@ -74,3 +74,30 @@ export const StyledBody = styled.div`
   overflow: hidden;
   height: 100%;
 `;
+
+export const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+`;
+
+export const ClearButton = styled.div`
+  -webkit-app-region: no-drag;
+  height: 20px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0 10px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-right: 10px;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+`;

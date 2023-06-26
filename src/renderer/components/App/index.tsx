@@ -1,11 +1,13 @@
 import * as React from "react";
 import {
+  ClearButton,
   SettingsIcon,
   StyledApp,
   StyledBody,
   StyledHeader,
   WindowControlButton,
   WindowControls,
+  Wrapper,
 } from "./style";
 import { SETTINGS_ICON } from "@/renderer/constants/icons";
 import { Chat } from "../Chat";
@@ -22,6 +24,10 @@ export const App = observer(() => {
 
   const handleControlButtonClicked = React.useCallback((action: string) => {
     window.electron.ipcRenderer.send(action);
+  }, []);
+
+  const handleChatClear = React.useCallback(() => {
+    store.chatStore.clearChat();
   }, []);
 
   React.useEffect(() => {
@@ -79,15 +85,31 @@ export const App = observer(() => {
             title="Maximize"
           />
         </WindowControls>
-        <SettingsIcon
-          style={{
-            backgroundImage: `url(${SETTINGS_ICON})`,
-            filter: `invert(${
-              store.appSettings.currentappSettings.theme === "light" ? 1 : 0
-            })`,
-          }}
-          onClick={handleClick}
-        />
+        <Wrapper>
+          <ClearButton
+            onClick={handleChatClear}
+            style={{
+              border:
+                store.appSettings.currentappSettings.theme === "light"
+                  ? `1px solid rgba(0, 0, 0, 0.25)`
+                  : `1px solid rgba(255, 255,255, 0.5)`,
+              color: store.appSettings.currentappSettings["text-color"],
+              display: isSettingsOpen ? "none" : "flex",
+            }}
+          >
+            {" "}
+            Clear Chat
+          </ClearButton>
+          <SettingsIcon
+            style={{
+              backgroundImage: `url(${SETTINGS_ICON})`,
+              filter: `invert(${
+                store.appSettings.currentappSettings.theme === "light" ? 1 : 0
+              })`,
+            }}
+            onClick={handleClick}
+          />
+        </Wrapper>
       </StyledHeader>
       <StyledBody>{isSettingsOpen ? <Settings /> : <Chat />}</StyledBody>
     </StyledApp>

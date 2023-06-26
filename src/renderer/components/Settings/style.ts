@@ -61,6 +61,6 @@ export const Row = styled.div`
 
 export const Label = styled.div`
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
 `;

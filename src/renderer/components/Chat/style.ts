@@ -9,10 +9,11 @@ export const Container = styled.div`
 
 export const ChatContainer = styled.div`
   flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  align-items: center;
+  overflow: auto;
+  transition: 0.2s background-color;
 `;
 
 export const ChatInput = styled.div`
