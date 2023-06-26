@@ -113,6 +113,16 @@ ipcMain.on("get-autostart", () => {
   mainWindow.webContents.send("set-autostart", autostart);
 });
 
+ipcMain.on("get-color", () => {
+  let color = store.get("userData.color");
+  if (color === undefined) {
+    store.set("userData.color", "red");
+    color = "red";
+  }
+
+  mainWindow.webContents.send("set-color", color);
+});
+
 ipcMain.on("minimize-window", () => {
   mainWindow.minimize();
 });
@@ -131,4 +141,9 @@ ipcMain.on("save-theme", (event, theme: string) => {
 
 ipcMain.on("save-autostart", (event, autostart: boolean) => {
   store.set("userData.autostart", autostart);
+});
+
+ipcMain.on("save-color", (event, color: string) => {
+  store.set("userData.color", color);
+  console.log(store.get("userData.color"));
 });

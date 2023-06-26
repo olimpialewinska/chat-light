@@ -49,6 +49,8 @@ export const Row = styled.div`
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.05);
   transition: background-color 0.2s ease-in-out;
+  position: relative;
+  z-index: 0;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
@@ -57,10 +59,27 @@ export const Row = styled.div`
   @media (max-width: 600px) {
     width: 50%;
   }
+  &:after {
+    background-color: "transparent";
+  }
 `;
 
 export const Label = styled.div`
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
+`;
+
+export const Color = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: 10px;
+  z-index: 2;
+`;
+
+export const Box = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;

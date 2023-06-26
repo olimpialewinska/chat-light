@@ -4,6 +4,7 @@ interface UserData {
   userData: {
     theme: string;
     autostart: boolean;
+    chatColor: string;
   };
 }
 
@@ -19,6 +20,10 @@ const schema: Schema<UserData> = {
       autostart: {
         type: "boolean",
         default: true,
+      },
+      chatColor: {
+        type: "string",
+        default: "red",
       },
     },
   },

@@ -29,7 +29,11 @@ export const Chat = observer(() => {
     >
       <ChatContainer>
         {store.chatStore.chat.map((message, index) => (
-          <Message key={index} message={message} color={"red"} />
+          <Message
+            key={index}
+            message={message}
+            color={store.appSettings.colorShadeBasedOnTheme}
+          />
         ))}
       </ChatContainer>
 

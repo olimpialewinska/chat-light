@@ -38,7 +38,13 @@ export const App = observer(() => {
       store.appSettings.setAutostart(b);
     });
 
+    window.electron.ipcRenderer.on("set-color", (event, color) => {
+      store.appSettings.setColor(color);
+      console.log(color);
+    });
+
     window.electron.ipcRenderer.send("get-theme");
+    window.electron.ipcRenderer.send("get-color");
     window.electron.ipcRenderer.send("get-autostart");
   }, []);
 
