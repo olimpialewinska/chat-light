@@ -145,5 +145,4 @@ ipcMain.on("save-autostart", (event, autostart: boolean) => {
 
 ipcMain.on("save-color", (event, color: string) => {
   store.set("userData.color", color);
-  console.log(store.get("userData.color"));
 });

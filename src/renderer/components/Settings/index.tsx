@@ -41,7 +41,7 @@ export function Settings() {
       pink: isLightTheme ? "#f001b4" : "#ff76dd",
       blue: isLightTheme ? "#1201ff" : "#678aff",
       purple: isLightTheme ? "#7901e2" : "#b25ffb",
-      green: isLightTheme ? "#01c005" : "#2cff2f",
+      green: isLightTheme ? "#01c005" : "#77ff79",
     }[color];
     const border = selectedColor === color ? "1px solid" : "none";
     return { backgroundColor, border };

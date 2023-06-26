@@ -30,24 +30,6 @@ export const App = observer(() => {
     store.chatStore.clearChat();
   }, []);
 
-  React.useEffect(() => {
-    window.electron.ipcRenderer.on("set-theme", (event, theme) => {
-      store.appSettings.setTheme(theme);
-    });
-    window.electron.ipcRenderer.on("set-autostart", (event, b) => {
-      store.appSettings.setAutostart(b);
-    });
-
-    window.electron.ipcRenderer.on("set-color", (event, color) => {
-      store.appSettings.setColor(color);
-      console.log(color);
-    });
-
-    window.electron.ipcRenderer.send("get-theme");
-    window.electron.ipcRenderer.send("get-color");
-    window.electron.ipcRenderer.send("get-autostart");
-  }, []);
-
   return (
     <StyledApp
       style={{

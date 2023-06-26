@@ -15,11 +15,25 @@ import { Message } from "./Message";
 
 export const Chat = observer(() => {
   const [message, setMessage] = React.useState<string>("");
+
   const sendMessage = React.useCallback(() => {
     if (message.trim() === "") return;
     store.chatStore.addMessage({ text: message, isSelf: true });
     setMessage("");
   }, [message]);
+
+  const onInputKeyUp = React.useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" && e.shiftKey === true) {
+        e.preventDefault();
+        return;
+      }
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    },
+    [sendMessage]
+  );
 
   return (
     <Container
@@ -29,11 +43,7 @@ export const Chat = observer(() => {
     >
       <ChatContainer>
         {store.chatStore.chat.map((message, index) => (
-          <Message
-            key={index}
-            message={message}
-            color={store.appSettings.colorShadeBasedOnTheme}
-          />
+          <Message key={index} message={message} />
         ))}
       </ChatContainer>
 
@@ -63,6 +73,7 @@ export const Chat = observer(() => {
             }}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyUp={onInputKeyUp}
           />
         </MessageContainer>
         <Send

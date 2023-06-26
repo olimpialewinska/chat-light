@@ -21,7 +21,7 @@ export const ChatInput = styled.div`
   background-color: rgb(54, 54, 54);
   display: flex;
   flex-direction: row;
-  padding: 0 10px;
+  padding: 0 14px;
   transition: background-color 0.2s ease-in-out;
   align-items: center;
   justify-content: center;

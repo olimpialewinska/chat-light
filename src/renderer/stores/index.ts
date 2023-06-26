@@ -8,7 +8,9 @@ export class Store {
   public appSettings = new AppSettings();
   public chatStore = new Chat();
 
-  constructor() {}
+  constructor() {
+    this.appSettings.init();
+  }
 }
 
 export const store = new Store();

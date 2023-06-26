@@ -2,10 +2,10 @@ import React from "react";
 import { MessageContent, StyledMessage, Row } from "./style";
 import { observer } from "mobx-react-lite";
 import { IMessage } from "@/renderer/constants/interfaces/messageInterface";
+import { store } from "@/renderer/stores";
 
 interface MessageProps {
   message: IMessage;
-  color: string | null;
 }
 
 export const Message = observer((props: MessageProps) => {
@@ -15,10 +15,13 @@ export const Message = observer((props: MessageProps) => {
         <MessageContent
           style={{
             backgroundColor: props.message.isSelf
-              ? props.color
-                ? props.color
-                : ""
+              ? store.appSettings.colorShadeBasedOnTheme
               : "",
+            color:
+              store.appSettings.currentappSettings.theme === "dark" &&
+              props.message.isSelf
+                ? "#000"
+                : "#fff",
           }}
           isSelf={props.message.isSelf}
         >

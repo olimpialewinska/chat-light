@@ -16,6 +16,23 @@ export class AppSettings {
     });
   }
 
+  public init() {
+    window.electron.ipcRenderer.on("set-theme", (event, theme) => {
+      store.appSettings.setTheme(theme);
+    });
+    window.electron.ipcRenderer.on("set-autostart", (event, b) => {
+      store.appSettings.setAutostart(b);
+    });
+
+    window.electron.ipcRenderer.on("set-color", (event, color) => {
+      store.appSettings.setColor(color);
+    });
+
+    window.electron.ipcRenderer.send("get-theme");
+    window.electron.ipcRenderer.send("get-color");
+    window.electron.ipcRenderer.send("get-autostart");
+  }
+
   public setTheme(theme: string) {
     if (theme === "light") {
       this.currentappSettings = lightTheme;
@@ -33,7 +50,6 @@ export class AppSettings {
   }
 
   public setColor(color: string) {
-    console.log(color);
     const isLightTheme = this.currentappSettings.theme === "light";
     const colorMap: { [key: string]: string } = {
       pink: isLightTheme ? "#f001b4" : "#ff76dd",
@@ -41,7 +57,7 @@ export class AppSettings {
       red: isLightTheme ? "#ff0800" : "#fb6c67",
       blue: isLightTheme ? "#1201ff" : "#678aff",
       purple: isLightTheme ? "#7901e2" : "#b25ffb",
-      green: isLightTheme ? "#01c005" : "#2cff2f",
+      green: isLightTheme ? "#77ff79" : "#2cff2f",
     };
 
     this.colorShadeBasedOnTheme =
