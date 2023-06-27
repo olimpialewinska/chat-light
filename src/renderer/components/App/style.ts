@@ -1,12 +1,10 @@
 import styled from "styled-components";
 
 export const StyledApp = styled.div`
-  /* background-color: #fff; */
   height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  /* background-color: rgb(64, 64, 64); */
   transition: background-color 0.2s ease-in-out;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -14,7 +12,6 @@ export const StyledApp = styled.div`
 
 export const StyledHeader = styled.div`
   -webkit-app-region: drag;
-  /* background-color: rgb(54, 54, 54); */
   height: 32px;
   padding: 0 10px;
   display: flex;

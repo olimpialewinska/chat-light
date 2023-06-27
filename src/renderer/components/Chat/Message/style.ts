@@ -47,7 +47,6 @@ export const MessageContent = styled.div<BaseMessageProps>`
   ${(props) =>
     props.isSelf &&
     css`
-      background-color: rgb(0, 84, 56);
       color: rgb(255, 255, 255);
       align-self: flex-end;
       flex-direction: row-reverse;

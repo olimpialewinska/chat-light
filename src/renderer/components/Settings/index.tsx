@@ -31,7 +31,6 @@ export function Settings() {
     setIsOn(store.appSettings.theme.name === "dark");
     setIsOnAutostart(store.appSettings.autostart);
     setSelectedColor(store.appSettings.color);
-    console.log(store.appSettings.color);
   }, []);
 
   const getColorStyle = (color: string) => {

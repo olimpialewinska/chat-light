@@ -24,6 +24,7 @@ export const ChatInput = styled.div`
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  box-shadow: 2px -3px 3px rgba(0, 0, 0, 0.1);
 `;
 
 export const Attachment = styled.div`

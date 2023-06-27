@@ -13,7 +13,6 @@ import { store } from "@/renderer/stores";
 import { observer } from "mobx-react-lite";
 import { Message } from "./Message";
 import { send } from "@/renderer/utils/sendMessage";
-import { observe } from "mobx";
 
 export const Chat = observer(() => {
   const [message, setMessage] = React.useState<string>("");
@@ -33,15 +32,12 @@ export const Chat = observer(() => {
   );
 
   React.useEffect(() => {
-    observe(store.chatStore.chat, () => {
-      requestAnimationFrame(() => {
-        if (chatContentRef.current) {
-          chatContentRef.current.scrollTop =
-            chatContentRef.current.scrollHeight;
-        }
-      });
+    requestAnimationFrame(() => {
+      if (chatContentRef.current) {
+        chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+      }
     });
-  }, []);
+  }, [store.chatManager.currentChat?.chat]);
 
   const handleAttachmentClick = React.useCallback(() => {
     if (inputRef.current) {
@@ -75,27 +71,36 @@ export const Chat = observer(() => {
         isSelf: true,
       };
 
-      store.chatStore.addMessage(messageData);
+      store.chatManager.addMessage(
+        messageData,
+        store.chatManager.currentChat?.id!
+      );
     }
 
     if (selectedfiles) {
       selectedfiles.forEach((file) => {
-        store.chatStore.addMessage({
-          text: file.name,
-          isSelf: true,
-        });
+        store.chatManager.addMessage(
+          {
+            text: file.name,
+            isSelf: true,
+          },
+          store.chatManager.currentChat?.id!
+        );
       });
     }
 
     const data = await send(message, selectedfiles);
     if (data) {
-      store.chatStore.addMessage({
-        text: data,
-        isSelf: false,
-      });
+      store.chatManager.addMessage(
+        {
+          text: data,
+          isSelf: false,
+        },
+        store.chatManager.currentChat?.id!
+      );
     }
     setSelectedFiles(null);
-  }, [message, selectedfiles]);
+  }, [message, selectedfiles, store.chatManager]);
 
   const onInputKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
@@ -118,7 +123,7 @@ export const Chat = observer(() => {
       onDragOver={(e) => handleDragOver(e)}
     >
       <ChatContainer ref={chatContentRef}>
-        {store.chatStore.chat.map((message, index) => (
+        {store.chatManager.currentChat?.chat.map((message, index) => (
           <Message key={index} message={message} />
         ))}
       </ChatContainer>

@@ -1,15 +1,16 @@
 import { configure } from "mobx";
 import { AppSettings } from "./appSettings";
-import { Chat } from "./chatStore";
+import { ChatManager } from "./chatManager";
 
 configure({ enforceActions: "never" });
 
 export class Store {
   public appSettings = new AppSettings();
-  public chatStore = new Chat();
+  public chatManager = new ChatManager();
 
   constructor() {
     this.appSettings.init();
+    this.chatManager.init();
   }
 }
 

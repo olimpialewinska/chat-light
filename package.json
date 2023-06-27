@@ -33,12 +33,14 @@
   },
   "dependencies": {
     "@types/react-dom": "^18.2.4",
+    "@types/uuid": "^9.0.2",
     "electron-drag": "^2.0.0",
     "electron-store": "^8.1.0",
     "fs": "^0.0.1-security",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
     "path": "^0.12.7",
-    "react-loadingg": "^1.7.2"
+    "react-loadingg": "^1.7.2",
+    "uuid": "^9.0.0"
   }
 }

@@ -14,6 +14,7 @@ import { Chat } from "../Chat";
 import { Settings } from "../Settings";
 import { store } from "@/renderer/stores";
 import { observer } from "mobx-react-lite";
+import { CardRow } from "./ChatCard";
 
 export const App = observer(() => {
   const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
@@ -27,7 +28,9 @@ export const App = observer(() => {
   }, []);
 
   const handleChatClear = React.useCallback(() => {
-    store.chatStore.clearChat();
+    if (store.chatManager.currentChat) {
+      store.chatManager.clearChat();
+    }
   }, []);
 
   return (
@@ -64,6 +67,9 @@ export const App = observer(() => {
             title="Maximize"
           />
         </WindowControls>
+
+        {isSettingsOpen === false && <CardRow />}
+
         <Wrapper>
           <ClearButton
             onClick={handleChatClear}
@@ -76,7 +82,6 @@ export const App = observer(() => {
               display: isSettingsOpen ? "none" : "flex",
             }}
           >
-            {" "}
             Clear Chat
           </ClearButton>
           <SettingsIcon

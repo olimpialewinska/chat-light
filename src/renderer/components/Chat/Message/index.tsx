@@ -8,16 +8,35 @@ interface MessageProps {
   message: IMessage;
 }
 
+const getColorStyle = (color: string) => {
+  const backgroundColor = {
+    orange: "#ffa95d",
+    red: "#fb6c67",
+    pink: "#ff76dd",
+    blue: "#678aff",
+    purple: "#b25ffb",
+    green: "#77ff79",
+  }[color];
+
+  return backgroundColor;
+};
+
 export const Message = observer((props: MessageProps) => {
+  const messageColor = getColorStyle(store.appSettings.color);
+
   return (
     <StyledMessage isSelf={props.message.isSelf}>
       <Row isSelf={props.message.isSelf}>
         <MessageContent
           style={{
             backgroundColor: props.message.isSelf
-              ? store.appSettings.color
+              ? messageColor
               : "rgba(0, 0, 0, 0.1)",
-            color: store.appSettings.theme.name === "light" ? "#000" : "#fff",
+            color: props.message.isSelf
+              ? "#000"
+              : store.appSettings.theme.name === "light"
+              ? "#000"
+              : "#fff",
           }}
           isSelf={props.message.isSelf}
         >
