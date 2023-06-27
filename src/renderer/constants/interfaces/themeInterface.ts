@@ -1,5 +1,5 @@
 export interface ITheme {
-  theme: string;
+  name: string;
   "nav-bg": string;
   "background-color": string;
   "text-color": string;

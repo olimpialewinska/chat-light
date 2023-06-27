@@ -28,20 +28,20 @@ export function Settings() {
   }, []);
 
   useLayoutEffect(() => {
-    setIsOn(store.appSettings.currentappSettings.theme === "dark");
+    setIsOn(store.appSettings.theme.name === "dark");
     setIsOnAutostart(store.appSettings.autostart);
     setSelectedColor(store.appSettings.color);
+    console.log(store.appSettings.color);
   }, []);
 
   const getColorStyle = (color: string) => {
-    const isLightTheme = store.appSettings.currentappSettings.theme === "light";
     const backgroundColor = {
-      orange: isLightTheme ? "#ff7700" : "#ffa95d",
-      red: isLightTheme ? "#ff0800" : "#fb6c67",
-      pink: isLightTheme ? "#f001b4" : "#ff76dd",
-      blue: isLightTheme ? "#1201ff" : "#678aff",
-      purple: isLightTheme ? "#7901e2" : "#b25ffb",
-      green: isLightTheme ? "#01c005" : "#77ff79",
+      orange: "#ffa95d",
+      red: "#fb6c67",
+      pink: "#ff76dd",
+      blue: "#678aff",
+      purple: "#b25ffb",
+      green: "#77ff79",
     }[color];
     const border = selectedColor === color ? "1px solid" : "none";
     return { backgroundColor, border };
@@ -56,9 +56,7 @@ export function Settings() {
   );
 
   return (
-    <Container
-      style={{ color: store.appSettings.currentappSettings["text-color"] }}
-    >
+    <Container style={{ color: store.appSettings.theme["text-color"] }}>
       <Wrapper>
         <Row>
           <Label>Dark Mode</Label>

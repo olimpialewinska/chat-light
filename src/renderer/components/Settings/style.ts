@@ -76,6 +76,12 @@ export const Color = styled.div`
   border-radius: 50%;
   margin-left: 10px;
   z-index: 2;
+  cursor: pointer;
+  transition: 0.2s all;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 export const Box = styled.div`

@@ -31,17 +31,8 @@ export const App = observer(() => {
   }, []);
 
   return (
-    <StyledApp
-      style={{
-        backgroundColor:
-          store.appSettings.currentappSettings["background-color"],
-      }}
-    >
-      <StyledHeader
-        style={{
-          backgroundColor: store.appSettings.currentappSettings["nav-bg"],
-        }}
-      >
+    <StyledApp>
+      <StyledHeader>
         <WindowControls>
           <WindowControlButton
             onClick={() => {
@@ -78,10 +69,10 @@ export const App = observer(() => {
             onClick={handleChatClear}
             style={{
               border:
-                store.appSettings.currentappSettings.theme === "light"
+                store.appSettings.theme.name === "light"
                   ? `1px solid rgba(0, 0, 0, 0.25)`
                   : `1px solid rgba(255, 255,255, 0.5)`,
-              color: store.appSettings.currentappSettings["text-color"],
+              color: store.appSettings.theme["text-color"],
               display: isSettingsOpen ? "none" : "flex",
             }}
           >
@@ -92,7 +83,7 @@ export const App = observer(() => {
             style={{
               backgroundImage: `url(${SETTINGS_ICON})`,
               filter: `invert(${
-                store.appSettings.currentappSettings.theme === "light" ? 1 : 0
+                store.appSettings.theme.name === "light" ? 1 : 0
               })`,
             }}
             onClick={handleClick}

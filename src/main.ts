@@ -16,12 +16,26 @@ const exeName = path.basename(process.execPath);
 
 let autostart: boolean = store.get("userData.autostart");
 
+type ThemeName = "light" | "dark";
+
+let theme: ThemeName = store.get("userData.theme");
+if (!theme) {
+  theme = nativeTheme.shouldUseDarkColors ? "dark" : "light";
+  store.set("userData.theme", theme);
+}
+
+const getVibrancyForTheme = (theme: ThemeName) => {
+  return theme === "light" ? "medium-light" : "dark";
+};
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     title: "ChatLight",
     frame: false,
+    transparent: true,
+    vibrancy: getVibrancyForTheme(theme),
     webPreferences: {
       preload: __dirname + "/preload.js",
       nodeIntegration: false,
@@ -85,22 +99,16 @@ ipcMain.on("close-window", () => {
 });
 
 ipcMain.on("get-theme", () => {
-  let theme = store.get("userData.theme");
-  if (!theme) {
-    ipcMain.handle("dark-mode:toggle", () => {
-      if (nativeTheme.shouldUseDarkColors) {
-        nativeTheme.themeSource = "light";
-      } else {
-        nativeTheme.themeSource = "dark";
-      }
-      return nativeTheme.shouldUseDarkColors;
-    });
-
-    theme = nativeTheme.shouldUseDarkColors ? "dark" : "light";
-    store.set("userData.theme", theme);
-  }
-
   mainWindow.webContents.send("set-theme", theme);
+});
+
+ipcMain.handle("dark-mode:toggle", () => {
+  if (nativeTheme.shouldUseDarkColors) {
+    nativeTheme.themeSource = "light";
+  } else {
+    nativeTheme.themeSource = "dark";
+  }
+  return nativeTheme.shouldUseDarkColors;
 });
 
 ipcMain.on("get-autostart", () => {
@@ -135,8 +143,10 @@ ipcMain.on("fullscreen-window", () => {
   mainWindow.setFullScreen(!mainWindow.isFullScreen());
 });
 
-ipcMain.on("save-theme", (event, theme: string) => {
+ipcMain.on("save-theme", (event, theme: ThemeName) => {
   store.set("userData.theme", theme);
+
+  mainWindow.setVibrancy(getVibrancyForTheme(theme));
 });
 
 ipcMain.on("save-autostart", (event, autostart: boolean) => {

@@ -15,13 +15,9 @@ export const Message = observer((props: MessageProps) => {
         <MessageContent
           style={{
             backgroundColor: props.message.isSelf
-              ? store.appSettings.colorShadeBasedOnTheme
-              : "",
-            color:
-              store.appSettings.currentappSettings.theme === "dark" &&
-              props.message.isSelf
-                ? "#000"
-                : "#fff",
+              ? store.appSettings.color
+              : "rgba(0, 0, 0, 0.1)",
+            color: store.appSettings.theme.name === "light" ? "#000" : "#fff",
           }}
           isSelf={props.message.isSelf}
         >

@@ -3,14 +3,13 @@ import { darkTheme, lightTheme } from "../constants/themes";
 import { store } from ".";
 
 export class AppSettings {
-  public currentappSettings = lightTheme;
+  public theme = lightTheme;
   public autostart: boolean = true;
-  public color: string = "red";
-  public colorShadeBasedOnTheme: string = "";
+  public color: string = "#ff76dd";
 
   constructor() {
     makeObservable(this, {
-      currentappSettings: observable,
+      theme: observable,
       autostart: observable,
       color: observable,
     });
@@ -35,12 +34,12 @@ export class AppSettings {
 
   public setTheme(theme: string) {
     if (theme === "light") {
-      this.currentappSettings = lightTheme;
+      this.theme = lightTheme;
       return;
     }
 
     if (theme === "dark") {
-      this.currentappSettings = darkTheme;
+      this.theme = darkTheme;
       return;
     }
   }
@@ -50,18 +49,6 @@ export class AppSettings {
   }
 
   public setColor(color: string) {
-    const isLightTheme = this.currentappSettings.theme === "light";
-    const colorMap: { [key: string]: string } = {
-      pink: isLightTheme ? "#f001b4" : "#ff76dd",
-      orange: isLightTheme ? "#ff7700" : "#ffa95d",
-      red: isLightTheme ? "#ff0800" : "#fb6c67",
-      blue: isLightTheme ? "#1201ff" : "#678aff",
-      purple: isLightTheme ? "#7901e2" : "#b25ffb",
-      green: isLightTheme ? "#77ff79" : "#2cff2f",
-    };
-
-    this.colorShadeBasedOnTheme =
-      colorMap[color as keyof typeof colorMap] || "red";
     this.color = color;
   }
 }
