@@ -12,12 +12,11 @@ export const StyledApp = styled.div`
 
 export const StyledHeader = styled.div`
   -webkit-app-region: drag;
-  height: 32px;
+  height: 36px;
   padding: 0 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s ease-in-out;
 `;
 

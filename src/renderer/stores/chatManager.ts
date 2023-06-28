@@ -77,12 +77,12 @@ export class ChatManager {
     if (chat) {
       const index = this.chats.indexOf(chat);
       this.chats.splice(index, 1);
-      if (this.currentChat === chat) {
-        if (index - 1 > 0) {
-          this.currentChat = this.chats[index - 1];
-        } else {
-          this.addChat();
+      if (this.currentChat?.id === chat.id) {
+        if (index === 0) {
+          this.currentChat = this.chats[0];
+          return;
         }
+        this.currentChat = this.chats[index - 1];
       }
     }
   }

@@ -12,7 +12,7 @@ export const CardRow = observer(() => {
     if (wrapperElement) {
       wrapperElement.scrollLeft = wrapperElement.scrollWidth;
     }
-  }, [store.chatManager.chats]);
+  }, [store.chatManager.chats, store.chatManager.chats.length]);
 
   return (
     <Wrapper ref={wrapperRef}>
@@ -20,6 +20,7 @@ export const CardRow = observer(() => {
         store.chatManager.chats.map((chat) => {
           return (
             <ChatCard
+              key={chat.id}
               style={{
                 color: store.appSettings.theme["text-color"],
                 backgroundColor:
@@ -28,7 +29,7 @@ export const CardRow = observer(() => {
                     : "",
                 paddingRight: store.chatManager.chats.length > 1 ? 8 : 10,
               }}
-              onClick={() => {
+              onMouseDown={() => {
                 store.chatManager.setCurrentChat(chat.id);
               }}
             >
@@ -41,6 +42,9 @@ export const CardRow = observer(() => {
                     store.appSettings.theme.name === "light" ? 1 : 0
                   })`,
                   display: store.chatManager.chats.length > 1 ? "" : "none",
+                }}
+                onMouseDown={(e) => {
+                  e.stopPropagation();
                 }}
                 onClick={() => store.chatManager.deleteChat(chat.id)}
               />
