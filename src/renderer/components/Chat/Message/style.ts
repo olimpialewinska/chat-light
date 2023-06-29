@@ -64,3 +64,19 @@ export const Content = styled.div`
     background-color: rgba(255, 255, 255, 0.1);
   }
 `;
+
+export const Image = styled.div`
+  min-width: 160px;
+  min-height: 160px;
+  border-radius: 10px;
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: 0.2s all;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;

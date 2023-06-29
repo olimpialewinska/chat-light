@@ -3,16 +3,19 @@ import { observer } from "mobx-react-lite";
 import { store } from "@/renderer/stores";
 import { ChatCard, Close, NewChat, Wrapper } from "./style";
 import { ADD, CLOSE } from "@/renderer/constants/icons";
+import { observe } from "mobx";
 
 export const CardRow = observer(() => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const wrapperElement = wrapperRef.current;
-    if (wrapperElement) {
-      wrapperElement.scrollLeft = wrapperElement.scrollWidth;
-    }
-  }, [store.chatManager.chats, store.chatManager.chats.length]);
+    observe(store.chatManager.chats, () => {
+      const wrapperElement = wrapperRef.current;
+      if (wrapperElement) {
+        wrapperElement.scrollLeft = wrapperElement.scrollWidth;
+      }
+    });
+  }, []);
 
   return (
     <Wrapper ref={wrapperRef}>
@@ -33,7 +36,7 @@ export const CardRow = observer(() => {
                 store.chatManager.setCurrentChat(chat.id);
               }}
             >
-              {chat.name}
+              {chat.isLoading ? "Loading..." : chat.name}
 
               <Close
                 style={{

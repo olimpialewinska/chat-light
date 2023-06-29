@@ -7,19 +7,25 @@ import {
   MessageContainer,
   MessageInput,
   Send,
+  Error,
+  Loader,
+  FileRow,
+  Image,
 } from "./style";
 import { ATTACHMENT_ICON, SEND_ICON } from "@/renderer/constants/icons";
 import { store } from "@/renderer/stores";
 import { observer } from "mobx-react-lite";
 import { Message } from "./Message";
 import { send } from "@/renderer/utils/sendMessage";
+import { observe, set } from "mobx";
 
 export const Chat = observer(() => {
-  const [message, setMessage] = React.useState<string>("");
   const [selectedfiles, setSelectedFiles] = React.useState<File[] | null>(null);
   const chatContentRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const messageInputRef = React.useRef<HTMLDivElement>(null);
+  const [error, setError] = React.useState<string | null>(null);
+  const [errorVisible, setErrorVisible] = React.useState(false);
 
   const handleFileChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,13 +37,38 @@ export const Chat = observer(() => {
     []
   );
 
-  React.useEffect(() => {
+  const deleteFile = React.useCallback(
+    (index: number) => {
+      if (selectedfiles) {
+        const newFiles = [...selectedfiles];
+        newFiles.splice(index, 1);
+        setSelectedFiles(newFiles.length > 0 ? newFiles : null);
+      }
+    },
+    [selectedfiles]
+  );
+
+  React.useLayoutEffect(() => {
+    setSelectedFiles(null);
     requestAnimationFrame(() => {
+      messageInputRef.current!.innerHTML = "";
+
       if (chatContentRef.current) {
         chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
       }
     });
-  }, [store.chatManager.currentChat?.chat]);
+  }, [store.chatManager.currentChat]);
+
+  React.useEffect(() => {
+    observe(store.chatManager.currentChat!, () => {
+      requestAnimationFrame(() => {
+        if (chatContentRef.current) {
+          chatContentRef.current.scrollTop =
+            chatContentRef.current.scrollHeight;
+        }
+      });
+    });
+  }, [store.chatManager.currentChat, store.chatManager.currentChat?.chat]);
 
   const handleAttachmentClick = React.useCallback(() => {
     if (inputRef.current) {
@@ -51,12 +82,28 @@ export const Chat = observer(() => {
     setSelectedFiles(selectedfiles ? [...selectedfiles, ...file] : [...file]);
   };
 
+  const errorFunction = React.useCallback((message: string) => {
+    setErrorVisible(true);
+    setError(message);
+    setTimeout(() => {
+      setErrorVisible(false);
+    }, 3000);
+  }, []);
+
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
 
   const sendMessage = React.useCallback(async () => {
     const message = (messageInputRef.current?.innerText ?? "").trim();
+
+    if (
+      store.chatManager.checkIfChatIsLoading(store.chatManager.currentChat?.id!)
+    ) {
+      errorFunction("A request is already in progress. Please wait.");
+      return;
+    }
+
     requestAnimationFrame(() => {
       messageInputRef.current!.innerHTML = "";
     });
@@ -64,11 +111,13 @@ export const Chat = observer(() => {
     if (message === "" && !selectedfiles) {
       return;
     }
+    store.chatManager.setLoading(store.chatManager.currentChat?.id!, true);
 
     if (message !== "") {
       const messageData = {
         text: message,
         isSelf: true,
+        image: null,
       };
 
       store.chatManager.addMessage(
@@ -83,24 +132,20 @@ export const Chat = observer(() => {
           {
             text: file.name,
             isSelf: true,
+            image: URL.createObjectURL(file),
           },
           store.chatManager.currentChat?.id!
         );
       });
     }
 
-    const data = await send(message, selectedfiles);
-    if (data) {
-      store.chatManager.addMessage(
-        {
-          text: data,
-          isSelf: false,
-        },
-        store.chatManager.currentChat?.id!
-      );
-    }
     setSelectedFiles(null);
-  }, [message, selectedfiles, store.chatManager]);
+    const data = await send(
+      message,
+      selectedfiles,
+      store.chatManager.currentChat?.id!
+    );
+  }, [messageInputRef.current?.innerText, selectedfiles, store.chatManager]);
 
   const onInputKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
@@ -122,17 +167,44 @@ export const Chat = observer(() => {
       onDrop={(e) => handleDrop(e)}
       onDragOver={(e) => handleDragOver(e)}
     >
+      <Error
+        style={{
+          opacity: errorVisible ? 1 : 0,
+          pointerEvents: errorVisible ? "inherit" : "none",
+        }}
+      >
+        {error}
+      </Error>
       <ChatContainer ref={chatContentRef}>
         {store.chatManager.currentChat?.chat.map((message, index) => (
           <Message key={index} message={message} />
         ))}
+        {store.chatManager.currentChat?.isLoading && (
+          <div
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.1)",
+              borderRadius: 20,
+              padding: 4,
+              width: 108,
+              marginLeft: 10,
+            }}
+          >
+            <Loader />
+          </div>
+        )}
       </ChatContainer>
       {selectedfiles && (
-        <div>
+        <FileRow>
           {selectedfiles.map((file, index) => (
-            <div key={index}>{file.name}</div>
+            <Image
+              key={index}
+              style={{
+                backgroundImage: `url(${URL.createObjectURL(file)})`,
+              }}
+              onClick={() => deleteFile(index)}
+            />
           ))}
-        </div>
+        </FileRow>
       )}
 
       <ChatInput>

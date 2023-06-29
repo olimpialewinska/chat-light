@@ -1,6 +1,11 @@
 import { url } from "../constants/url";
+import { store } from "../stores";
 
-export async function send(message: string, files: File[] | null) {
+export async function send(
+  message: string,
+  files: File[] | null,
+  chatId: string
+) {
   const data = new FormData();
   data.append("message", message);
   if (files) {
@@ -14,8 +19,17 @@ export async function send(message: string, files: File[] | null) {
       method: "POST",
       body: data,
     });
-    return await response.text();
+
+    const res = await response.text();
+    store.chatManager.addMessage(
+      { text: res, isSelf: false, image: null },
+      chatId
+    );
+    store.chatManager.setLoading(chatId, false);
   } catch (e) {
-    return "Unexpected error occurred";
+    store.chatManager.addMessage(
+      { text: "Unexpected error occurred", isSelf: false, image: null },
+      chatId
+    );
   }
 }

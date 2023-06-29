@@ -6,6 +6,7 @@ interface Conversation {
   id: string;
   name: string;
   chat: IMessage[];
+  isLoading: boolean;
 }
 
 export class ChatManager {
@@ -17,8 +18,10 @@ export class ChatManager {
         {
           text: "Hello",
           isSelf: false,
+          image: null,
         },
       ],
+      isLoading: false,
     },
   ];
   currentChat: Conversation | null = null;
@@ -42,8 +45,10 @@ export class ChatManager {
         {
           text: "Hello",
           isSelf: false,
+          image: null,
         },
       ],
+      isLoading: false,
     };
     this.chats.push(newChat);
     this.currentChat = newChat;
@@ -53,8 +58,11 @@ export class ChatManager {
     const chat = this.chats.find((chat) => chat.id === chatId);
     if (chat) {
       chat.chat.push(message);
-      chat.name = message.text.substring(0, 15) + "...";
-      this.currentChat = chat;
+      chat.name = message.image
+        ? "Image"
+        : message.text.length >= 15
+        ? message.text.substring(0, 15) + "..."
+        : message.text;
     }
   }
 
@@ -85,5 +93,24 @@ export class ChatManager {
         this.currentChat = this.chats[index - 1];
       }
     }
+  }
+
+  setLoading(id: string, isLoading: boolean) {
+    const chat = this.chats.find((chat) => chat.id === id);
+    if (chat) {
+      chat.isLoading = isLoading;
+    }
+  }
+
+  checkIfChatIsLoading(chatId: string) {
+    const chat = this.chats.find(
+      (chat) => chat.id === chatId && chat.isLoading
+    );
+
+    if (chat) {
+      return true;
+    }
+
+    return false;
   }
 }
