@@ -57,6 +57,8 @@ export const MessageContainer = styled.div`
 `;
 
 export const MessageInput = styled.div`
+  max-height: 400px;
+  overflow-y: auto;
   background-color: transparent;
   border: none;
   flex: 1;
