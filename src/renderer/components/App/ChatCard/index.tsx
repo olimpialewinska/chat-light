@@ -9,13 +9,11 @@ export const CardRow = observer(() => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    observe(store.chatManager.chats, () => {
-      const wrapperElement = wrapperRef.current;
-      if (wrapperElement) {
-        wrapperElement.scrollLeft = wrapperElement.scrollWidth;
-      }
-    });
-  }, []);
+    const wrapperElement = wrapperRef.current;
+    if (wrapperElement) {
+      wrapperElement.scrollLeft = wrapperElement.scrollWidth;
+    }
+  }, [store.chatManager.chats, store.chatManager.chats.length]);
 
   return (
     <Wrapper ref={wrapperRef}>

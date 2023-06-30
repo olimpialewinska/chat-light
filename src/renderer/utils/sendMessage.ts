@@ -1,3 +1,4 @@
+import { IMessage } from "../constants/interfaces/messageInterface";
 import { url } from "../constants/url";
 import { store } from "../stores";
 
@@ -6,20 +7,23 @@ export async function send(
   files: File[] | null,
   chatId: string
 ) {
-  const data = new FormData();
-  data.append("message", message);
+  const formData = new FormData();
+  formData.append("message", message);
+  const messages = store.chatManager.currentChat?.chat.map((message) => ({
+    role: message.isSelf ? "user" : "assistant",
+    content: message.text,
+  }));
+  formData.append("messages", JSON.stringify(messages));
   if (files) {
     files.forEach((file) => {
-      data.append("file", file);
+      formData.append("files", file, file.name);
     });
   }
-
   try {
-    const response = await fetch(`${url}/photo`, {
+    const response = await fetch(`${url}/askGpt`, {
       method: "POST",
-      body: data,
+      body: formData,
     });
-
     const res = await response.text();
     store.chatManager.addMessage(
       { text: res, isSelf: false, image: null },
@@ -31,5 +35,6 @@ export async function send(
       { text: "Unexpected error occurred", isSelf: false, image: null },
       chatId
     );
+    store.chatManager.setLoading(chatId, false);
   }
 }

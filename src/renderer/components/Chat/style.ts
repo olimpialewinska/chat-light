@@ -64,8 +64,6 @@ export const MessageInput = styled.div`
   color: #fff;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-
-  resize: none;
   &:focus {
     outline: none;
   }
@@ -141,12 +139,12 @@ export const FileRow = styled.div`
   max-height: 100px !important;
   display: flex;
   flex-direction: row;
-  background-color: rgb(64, 64, 64);
+  background-color: rgba(255, 255, 255, 0.1);
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
   scrollbar-width: 0;
-  padding: 10px;
+  padding: 10px 20px;
   justify-content: flex-start;
   align-items: center;
   scrollbar-color: transparent transparent;

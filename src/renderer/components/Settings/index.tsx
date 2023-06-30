@@ -35,12 +35,12 @@ export function Settings() {
 
   const getColorStyle = (color: string) => {
     const backgroundColor = {
-      orange: "#ffa95d",
-      red: "#fb6c67",
-      pink: "#ff76dd",
-      blue: "#678aff",
-      purple: "#b25ffb",
-      green: "#77ff79",
+      orange: "rgba(255, 169, 93, 0.5)",
+      red: "rgba(251, 108, 103, 0.5)",
+      pink: "rgba(255, 118, 221, 0.5)",
+      blue: "rgba(103, 138, 255, 0.5)",
+      purple: "rgba(178, 95, 255, 0.5)",
+      green: "rgba(119, 255, 121, 0.5)",
     }[color];
     const border = selectedColor === color ? "1px solid" : "none";
     return { backgroundColor, border };

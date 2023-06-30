@@ -57,7 +57,7 @@ export const Chat = observer(() => {
         chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
       }
     });
-  }, [store.chatManager.currentChat]);
+  }, [store.chatManager.currentChat?.id]);
 
   React.useEffect(() => {
     observe(store.chatManager.currentChat!, () => {
@@ -82,6 +82,12 @@ export const Chat = observer(() => {
     setSelectedFiles(selectedfiles ? [...selectedfiles, ...file] : [...file]);
   };
 
+  const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const text = event.clipboardData.getData("text/plain");
+    document.execCommand("insertText", false, text);
+  };
+
   const errorFunction = React.useCallback((message: string) => {
     setErrorVisible(true);
     setError(message);
@@ -104,10 +110,6 @@ export const Chat = observer(() => {
       return;
     }
 
-    requestAnimationFrame(() => {
-      messageInputRef.current!.innerHTML = "";
-    });
-
     if (message === "" && !selectedfiles) {
       return;
     }
@@ -125,6 +127,9 @@ export const Chat = observer(() => {
         store.chatManager.currentChat?.id!
       );
     }
+    requestAnimationFrame(() => {
+      messageInputRef.current!.innerHTML = "";
+    });
 
     if (selectedfiles) {
       selectedfiles.forEach((file) => {
@@ -140,11 +145,8 @@ export const Chat = observer(() => {
     }
 
     setSelectedFiles(null);
-    const data = await send(
-      message,
-      selectedfiles,
-      store.chatManager.currentChat?.id!
-    );
+
+    await send(message, selectedfiles, store.chatManager.currentChat?.id!);
   }, [messageInputRef.current?.innerText, selectedfiles, store.chatManager]);
 
   const onInputKeyDown = React.useCallback(
@@ -237,6 +239,7 @@ export const Chat = observer(() => {
             ref={messageInputRef}
             contentEditable
             onKeyDown={onInputKeyDown}
+            onPaste={(e) => handlePaste(e)}
           ></MessageInput>
         </MessageContainer>
         <Send

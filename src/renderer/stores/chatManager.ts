@@ -2,28 +2,28 @@ import { makeObservable, observable } from "mobx";
 import { v4 } from "uuid";
 import { IMessage } from "../constants/interfaces/messageInterface";
 
-interface Conversation {
-  id: string;
-  name: string;
-  chat: IMessage[];
-  isLoading: boolean;
-}
-
-export class ChatManager {
-  chats: Conversation[] = [
+export class Conversation {
+  id: string = v4();
+  name: string = "New chat";
+  chat: IMessage[] = [
     {
-      id: v4(),
-      name: "New chat",
-      chat: [
-        {
-          text: "Hello",
-          isSelf: false,
-          image: null,
-        },
-      ],
-      isLoading: false,
+      text: "Hello, how can I help you?",
+      isSelf: false,
+      image: null,
     },
   ];
+  isLoading = false;
+
+  constructor() {
+    makeObservable(this, {
+      chat: observable,
+      name: observable,
+      isLoading: observable,
+    });
+  }
+}
+export class ChatManager {
+  chats: Conversation[] = [new Conversation()];
   currentChat: Conversation | null = null;
 
   constructor() {
@@ -38,20 +38,9 @@ export class ChatManager {
   }
 
   addChat() {
-    const newChat = {
-      id: v4(),
-      name: "New chat",
-      chat: [
-        {
-          text: "Hello",
-          isSelf: false,
-          image: null,
-        },
-      ],
-      isLoading: false,
-    };
-    this.chats.push(newChat);
-    this.currentChat = newChat;
+    const newConv = new Conversation();
+    this.chats.push(newConv);
+    this.currentChat = newConv;
   }
 
   addMessage(message: IMessage, chatId: string) {
