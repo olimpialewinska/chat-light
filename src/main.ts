@@ -53,7 +53,7 @@ function createWindow() {
     mainWindow.loadFile("build/index.html");
   }
 
-  globalShortcut.register("CommandOrControl+N", toggleWindow);
+  globalShortcut.register("CommandOrControl+M", toggleWindow);
 
   globalShortcut.register("CommandOrControl+K", () => {
     app.quit();

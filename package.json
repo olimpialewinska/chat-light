@@ -8,7 +8,7 @@
     "start": "cross-env DEV=1 electron .",
     "compile-win32": "npm run build && electron-builder -w",
     "compile-darwin": "npm run build && electron-builder -m",
-    "build": "tsc || webpack --config webpack.config.js"
+    "build": "tsc && webpack --config webpack.config.js"
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26",

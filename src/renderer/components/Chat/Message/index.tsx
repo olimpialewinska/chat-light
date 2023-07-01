@@ -34,7 +34,7 @@ export const Message = observer((props: MessageProps) => {
             <div
               style={{
                 backgroundColor: "rgba(0,0,0, 0.3)",
-                padding: 10,
+                padding: "2px 20px 2px 20px",
                 borderRadius: 20,
               }}
             >
